@@ -10,7 +10,7 @@ show databases;
 CREATE DATABASE miniagenda;
 
 -- Seleciona uma base de dados para o trabalho
-use nome_da_base_de_dados
+use miniagenda;
 
 -- Cria uma tabela com o nome contato
 CREATE TABLE contato (

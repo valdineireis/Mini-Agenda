@@ -504,6 +504,28 @@ public class ContatoFormularioModelo extends javax.swing.JFrame {
 
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
 
+        // Efetuar validação dos campos
+        String msg = ""; // variavel que armazenará as mensagens de erro
+        
+        // verifica o nome
+        if (txtNome.getText().trim().equals("")) {
+            msg += "Informe o Nome do Contato.\n";
+            txtNome.requestFocus();
+        }
+        // verifica o telefone
+        if (txtTelefone.getText().trim().equals("")) {
+            msg += "Informe o(s) telefone(s) do Contato.";
+            txtTelefone.requestFocus();
+        }
+        
+        // se a variavel 'msg' for diferente de "" (vazio) é porque 
+        // ocorreu algum erro, então será exibida uma menssagem e a
+        // execução do programa será interrompida
+        if ( ! msg.equals("") ) {
+            JOptionPane.showMessageDialog(null, msg);
+            return;
+        }
+        
         // cria um objeto do tipo ContatoDao
         contatoDao = new ContatoDao();
 
