@@ -53,7 +53,9 @@ public class ContatoDao {
             
             stm = con.createStatement();
             
-            rs = stm.executeQuery("SELECT * FROM contato");
+            String sql = "SELECT * FROM contato";
+            
+            rs = stm.executeQuery( sql );
 
             while (rs.next()) {
                 
