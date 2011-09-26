@@ -16,53 +16,51 @@ import java.util.List;
  * @author Valdinei Reis
  */
 public class ContatoDao {
+        
+    private Connection con = null;
+    private PreparedStatement ps = null;
+    private Statement stm = null;
+    private ResultSet rs = null;
     
     public void inserir(Contato contato) throws SQLException {
-        
-        Connection con = null;
         
         try {
             con = ConexaoMySQL.getConnection();
             
             String sql = "INSERT INTO contato(nome, telefone) VALUES ( ?, ? )";
             
-            PreparedStatement pstmtInsert = con.prepareStatement( sql );
-            pstmtInsert.setString(1, contato.getNome());
-            pstmtInsert.setString(2, contato.getTelefone());
+            ps = con.prepareStatement( sql );
+            ps.setString(1, contato.getNome());
+            ps.setString(2, contato.getTelefone());
             
-            pstmtInsert.executeUpdate();
+            ps.executeUpdate();
             
         } catch (SQLException ex) {
             throw new RuntimeException("Erro no SQL !! " + ex.getMessage());
         } catch (Exception ex) {
             throw new RuntimeException("Erro ao inserir !! " + ex.getMessage());
         } finally {
-            if (con != null) {
-                con.close();
-            }
+            fecharConexoes();
         }
     }
     
     public List<Contato> listar() throws SQLException {
-
-        Connection con = null;
         
         List<Contato> listaDeContatos = new ArrayList<Contato>();
         
         try {
             con = ConexaoMySQL.getConnection();
             
-            Statement stmtRecords = con.createStatement();
+            stm = con.createStatement();
             
-            ResultSet rsRecords = 
-                    stmtRecords.executeQuery("SELECT * FROM contato");
+            rs = stm.executeQuery("SELECT * FROM contato");
 
-            while (rsRecords.next()) {
+            while (rs.next()) {
                 
                 Contato contato = new Contato();
-                contato.setId( rsRecords.getLong("id") );
-                contato.setNome( rsRecords.getString("nome") );
-                contato.setTelefone( rsRecords.getString("telefone") );
+                contato.setId( rs.getLong("id") );
+                contato.setNome( rs.getString("nome") );
+                contato.setTelefone( rs.getString("telefone") );
                 
                 listaDeContatos.add(contato);
             }
@@ -72,9 +70,7 @@ public class ContatoDao {
         } catch (Exception ex) {
             throw new RuntimeException("Erro ao efetuar busca !! " + ex.getMessage());
         } finally {
-            if (con != null) {
-                con.close();
-            }
+            fecharConexoes();
         }
         
         return listaDeContatos;
@@ -82,57 +78,47 @@ public class ContatoDao {
     
     public void atualizar(Contato contato) throws SQLException {
         
-        Connection con = null;
-        
         try {
             con = ConexaoMySQL.getConnection();
             
             String sql = "UPDATE contato SET nome = ?, telefone = ? WHERE id = ?";
             
-            PreparedStatement pstmtInsert = con.prepareStatement( sql );
-            pstmtInsert.setString(1, contato.getNome());
-            pstmtInsert.setString(2, contato.getTelefone());
-            pstmtInsert.setLong(3, contato.getId());
-            pstmtInsert.executeUpdate();
+            ps = con.prepareStatement( sql );
+            ps.setString(1, contato.getNome());
+            ps.setString(2, contato.getTelefone());
+            ps.setLong(3, contato.getId());
+            ps.executeUpdate();
             
         } catch (SQLException ex) {
             throw new RuntimeException("Erro no SQL !! " + ex.getMessage());
         } catch (Exception ex) {
             throw new RuntimeException("Erro ao atualizar !! " + ex.getMessage());
         } finally {
-            if (con != null) {
-                con.close();
-            }
+            fecharConexoes();
         }
     }
     
     public void excluir(Long id) throws SQLException {
-        
-        Connection con = null;
         
         try {
             con = ConexaoMySQL.getConnection();
             
             String sql = "DELETE FROM contato WHERE id = ?";
             
-            PreparedStatement pstmtInsert = con.prepareStatement( sql );
-            pstmtInsert.setLong(1, id);
-            pstmtInsert.executeUpdate();
+            ps = con.prepareStatement( sql );
+            ps.setLong(1, id);
+            ps.executeUpdate();
             
         } catch (SQLException ex) {
             throw new RuntimeException("Erro no SQL !! " + ex.getMessage());
         } catch (Exception ex) {
             throw new RuntimeException("Erro ao excluir !! " + ex.getMessage());
         } finally {
-            if (con != null) {
-                con.close();
-            }
+            fecharConexoes();
         }
     }
     
     public Contato buscarPorId(Long id) throws SQLException {
-
-        Connection con = null;
         
         Contato contato = null;
         
@@ -141,17 +127,17 @@ public class ContatoDao {
             
             String sql = "SELECT * FROM contato WHERE id = ?";
             
-            PreparedStatement stmtRecords = con.prepareStatement(sql);
-            stmtRecords.setLong(1, id);
+            ps = con.prepareStatement(sql);
+            ps.setLong(1, id);
             
-            ResultSet rsRecords = stmtRecords.executeQuery();
+            rs = ps.executeQuery();
 
-            if (rsRecords.next()) {
+            if (rs.next()) {
                 
                 contato = new Contato();
-                contato.setId( rsRecords.getLong("id") );
-                contato.setNome( rsRecords.getString("nome") );
-                contato.setTelefone( rsRecords.getString("telefone") );
+                contato.setId( rs.getLong("id") );
+                contato.setNome( rs.getString("nome") );
+                contato.setTelefone( rs.getString("telefone") );
                 
             }
 
@@ -160,12 +146,30 @@ public class ContatoDao {
         } catch (Exception ex) {
             throw new RuntimeException("Erro ao efetuar busca !! " + ex.getMessage());
         } finally {
-            if (con != null) {
-                con.close();
-            }
+            fecharConexoes();
         }
         
         return contato;
+    }
+    
+    /**
+     * Método responsavel por fechar as Connection, PreparedStatement, 
+     * Statement e ResultSet
+     * @throws SQLException 
+     */
+    private void fecharConexoes() throws SQLException {
+        if (con != null) {
+            con.close();
+        }
+        if (ps != null) {
+            ps.close();
+        }
+        if (stm != null) {
+            stm.close();
+        }
+        if (rs != null) {
+            rs.close();
+        }
     }
     
 }

@@ -507,15 +507,15 @@ public class ContatoFormularioModelo extends javax.swing.JFrame {
         // Efetuar validação dos campos
         String msg = ""; // variavel que armazenará as mensagens de erro
         
-        // verifica o nome
-        if (txtNome.getText().trim().equals("")) {
-            msg += "Informe o Nome do Contato.\n";
-            txtNome.requestFocus();
-        }
         // verifica o telefone
         if (txtTelefone.getText().trim().equals("")) {
-            msg += "Informe o(s) telefone(s) do Contato.";
+            msg += "Preencha o compo telefone.\n";
             txtTelefone.requestFocus();
+        }
+        // verifica o nome
+        if (txtNome.getText().trim().equals("")) {
+            msg += "Preencha o compo Nome.";
+            txtNome.requestFocus();
         }
         
         // se a variavel 'msg' for diferente de "" (vazio) é porque 
