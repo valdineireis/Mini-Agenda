@@ -45,13 +45,11 @@ public class ContatoDao {
     }
     
     public List<Contato> listar(String nome) throws SQLException {
-        
+
         List<Contato> listaDeContatos = new ArrayList<Contato>();
         
         try {
             con = ConexaoMySQL.getConnection();
-            
-            stm = con.createStatement();
             
             String sql = "SELECT * FROM contato WHERE nome LIKE ?";
             
