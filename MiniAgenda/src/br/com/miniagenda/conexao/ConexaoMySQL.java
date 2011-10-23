@@ -26,7 +26,7 @@ public class ConexaoMySQL {
                 // Localização do banco de dados
                 String url = "jdbc:mysql://localhost:3306/miniagenda";
                 String user = "root"; // Usuário com permissão de acesso ao banco de dados
-                String password = ""; // Senha do usuário
+                String password = "root"; // Senha do usuário
                 
                 // Nesta linha conecta-se ao banco de dados
                 con = DriverManager.getConnection(url, user, password);

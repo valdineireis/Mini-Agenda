@@ -44,7 +44,7 @@ public class ContatoDao {
         }
     }
     
-    public List<Contato> listar() throws SQLException {
+    public List<Contato> listar(String nome) throws SQLException {
         
         List<Contato> listaDeContatos = new ArrayList<Contato>();
         
@@ -53,9 +53,12 @@ public class ContatoDao {
             
             stm = con.createStatement();
             
-            String sql = "SELECT * FROM contato";
+            String sql = "SELECT * FROM contato WHERE nome LIKE ?";
             
-            rs = stm.executeQuery( sql );
+            ps = con.prepareStatement( sql );
+            ps.setString(1, "%" + nome + "%");
+            
+            rs = ps.executeQuery();
 
             while (rs.next()) {
                 

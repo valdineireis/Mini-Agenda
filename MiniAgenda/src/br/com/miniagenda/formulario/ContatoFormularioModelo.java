@@ -26,13 +26,13 @@ public class ContatoFormularioModelo extends javax.swing.JFrame {
     public ContatoFormularioModelo() {
         initComponents();
 
-        preencherTabela(); // chama o método responsavel por listar os contatos
+        preencherTabela(""); // chama o método responsavel por listar os contatos
     }
 
     /**
      * Método responsável por preencher a tabela de contatos
      */
-    private void preencherTabela() {
+    private void preencherTabela(String nome) {
         List<Contato> listaDeContatos;
         try {
             // cria um novo objeto do tipo ContatoDao
@@ -41,7 +41,7 @@ public class ContatoFormularioModelo extends javax.swing.JFrame {
             // chama o método 'listar', para buscar todos os contatos
             // em seguida, o resultado da busca é adicionado na variavel 
             // listaDeContatos
-            listaDeContatos = contatoDao.listar();
+            listaDeContatos = contatoDao.listar(nome);
 
             // trecho de código responsavel por limpar a tabela, para receber
             // novas informações
@@ -97,7 +97,7 @@ public class ContatoFormularioModelo extends javax.swing.JFrame {
         jPanel4 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
         txtBusca = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
+        btnBusca = new javax.swing.JButton();
         btnExcluir = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
@@ -150,7 +150,12 @@ public class ContatoFormularioModelo extends javax.swing.JFrame {
 
         jLabel4.setText("Busca por Nome:");
 
-        jButton1.setText("Buscar");
+        btnBusca.setText("Buscar");
+        btnBusca.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBuscaActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -162,7 +167,7 @@ public class ContatoFormularioModelo extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txtBusca, javax.swing.GroupLayout.DEFAULT_SIZE, 370, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton1)
+                .addComponent(btnBusca)
                 .addContainerGap())
         );
         jPanel4Layout.setVerticalGroup(
@@ -172,7 +177,7 @@ public class ContatoFormularioModelo extends javax.swing.JFrame {
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
                     .addComponent(txtBusca, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton1))
+                    .addComponent(btnBusca))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -243,7 +248,7 @@ public class ContatoFormularioModelo extends javax.swing.JFrame {
 
         jPanel5.setBackground(java.awt.Color.lightGray);
 
-        lblAcao.setFont(new java.awt.Font("Ubuntu", 1, 18)); // NOI18N
+        lblAcao.setFont(new java.awt.Font("Ubuntu", 1, 18));
         lblAcao.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblAcao.setText("Adicionar Novo Contato");
 
@@ -315,7 +320,7 @@ public class ContatoFormularioModelo extends javax.swing.JFrame {
 
         jPanel3.setBackground(java.awt.Color.lightGray);
 
-        jLabel1.setFont(new java.awt.Font("Ubuntu", 1, 18)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Ubuntu", 1, 18));
         jLabel1.setText("Agênda");
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
@@ -360,13 +365,10 @@ public class ContatoFormularioModelo extends javax.swing.JFrame {
                     .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(btnNovo)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 334, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 370, Short.MAX_VALUE)
                         .addComponent(jButton2)))
                 .addContainerGap())
         );
-
-        layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {btnNovo, jButton2});
-
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
@@ -460,7 +462,7 @@ public class ContatoFormularioModelo extends javax.swing.JFrame {
 
             // chama o método excluir, contido dentro da classe ContatoDao
             contatoDao.excluir(codigo);
-            preencherTabela(); // após a exclusao, a tabela é atualizada
+            preencherTabela(""); // após a exclusao, a tabela é atualizada
 
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, "Erro ao excluir Contato!\n" + ex.getMessage());
@@ -562,7 +564,7 @@ public class ContatoFormularioModelo extends javax.swing.JFrame {
 
             }
 
-            preencherTabela();
+            preencherTabela("");
             limparCampos();
 
         } catch (Exception ex) {
@@ -572,6 +574,10 @@ public class ContatoFormularioModelo extends javax.swing.JFrame {
         }
 
     }//GEN-LAST:event_btnSalvarActionPerformed
+
+    private void btnBuscaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscaActionPerformed
+        this.preencherTabela(txtBusca.getText());
+    }//GEN-LAST:event_btnBuscaActionPerformed
 
     /**
      * @param args the command line arguments
@@ -585,12 +591,12 @@ public class ContatoFormularioModelo extends javax.swing.JFrame {
         });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnBusca;
     private javax.swing.JButton btnEditar;
     private javax.swing.JButton btnExcluir;
     private javax.swing.JButton btnLimpar;
     private javax.swing.JButton btnNovo;
     private javax.swing.JButton btnSalvar;
-    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
